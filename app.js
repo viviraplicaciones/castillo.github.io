@@ -1,3 +1,54 @@
+const CACHE_NAME = "parqueo-app-cache-v1";
+const urlsToCache = [
+    "/",
+    "/index.html",
+    "/style.css",
+    "/app.js",
+    "/manifest.json",
+    "/logo.png"
+];
+
+// Instalación del Service Worker y almacenamiento en caché
+self.addEventListener("install", (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(urlsToCache);
+        })
+    );
+});
+
+// Intercepción de solicitudes para servir desde caché
+self.addEventListener("fetch", (event) => {
+    event.respondWith(
+        caches.match(event.request).then((response) => {
+            return response || fetch(event.request);
+        })
+    );
+});
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/service-worker.js")
+            .then((reg) => console.log("Service Worker registrado con éxito:", reg.scope))
+            .catch((err) => console.log("Error al registrar el Service Worker:", err));
+    });
+}
+
+// Actualización del caché cuando hay cambios
+self.addEventListener("activate", (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cache) => {
+                    if (cache !== CACHE_NAME) {
+                        return caches.delete(cache);
+                    }
+                })
+            );
+        })
+    );
+});
+
+
 // Menú responsive
 document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.querySelector(".menu-toggle");
@@ -47,4 +98,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+document.getElementById("compartir").addEventListener("click", function () {
+    if (navigator.share) {
+        navigator.share({
+            title: "PARQUEO - APARTAMENTO",
+            text: "¡Accede a la app de Parqueo - Apartamento!",
+            url: "https://viviraplicaciones.github.io/castillo.github.io/"
+        })
+        .then(() => console.log("Contenido compartido con éxito"))
+        .catch((error) => console.log("Error al compartir:", error));
+    } else {
+        alert("Tu navegador no soporta la función de compartir.");
+    }
+});
+
 
