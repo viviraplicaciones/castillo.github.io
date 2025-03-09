@@ -1,54 +1,3 @@
-const CACHE_NAME = "parqueo-app-cache-v1";
-const urlsToCache = [
-    "/",
-    "/index.html",
-    "/style.css",
-    "/app.js",
-    "/manifest.json",
-    "/logo.png"
-];
-
-// Instalación del Service Worker y almacenamiento en caché
-self.addEventListener("install", (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache);
-        })
-    );
-});
-
-// Intercepción de solicitudes para servir desde caché
-self.addEventListener("fetch", (event) => {
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
-        })
-    );
-});
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/service-worker.js")
-            .then((reg) => console.log("Service Worker registrado con éxito:", reg.scope))
-            .catch((err) => console.log("Error al registrar el Service Worker:", err));
-    });
-}
-
-// Actualización del caché cuando hay cambios
-self.addEventListener("activate", (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
-                    }
-                })
-            );
-        })
-    );
-});
-
-
 // Menú responsive
 document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.querySelector(".menu-toggle");
@@ -59,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Generador de código QR y filtrado de parqueadero
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("qrForm");
     const qrCodeDiv = document.getElementById("qrCode");
@@ -99,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Botón de compartir
 document.getElementById("compartir").addEventListener("click", function () {
     if (navigator.share) {
         navigator.share({
@@ -112,5 +63,55 @@ document.getElementById("compartir").addEventListener("click", function () {
         alert("Tu navegador no soporta la función de compartir.");
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("adminLogin").addEventListener("click", function () {
+        let password = document.getElementById("adminPassword").value;
+        
+        if (password === "vivirapp2018") {
+            window.location.href = "base-de-datos.html"; // Redirige a la página de base de datos
+        } else {
+            alert("Contraseña incorrecta.");
+        }
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const video = document.getElementById("qrVideo");
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const scanButton = document.getElementById("scanQR");
 
+    async function startQRScanner() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            video.srcObject = stream;
+            video.setAttribute("playsinline", true); // Evita pantalla completa en móviles
+            video.play();
+            requestAnimationFrame(scanQR);
+        } catch (err) {
+            console.error("Error al acceder a la cámara:", err);
+            alert("No se pudo acceder a la cámara.");
+        }
+    }
 
+    function scanQR() {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, canvas.width, canvas.height);
+            
+            if (code) {
+                alert("Código QR detectado: " + code.data);
+                video.srcObject.getTracks().forEach(track => track.stop()); // Detener la cámara
+            } else {
+                requestAnimationFrame(scanQR);
+            }
+        } else {
+            requestAnimationFrame(scanQR);
+        }
+    }
+
+    scanButton.addEventListener("click", startQRScanner);
+});
