@@ -3,28 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base de Datos</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="logo.png">
+    <title>QR Generator & Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        section {
+            margin-top: 20px;
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+    <script src="https://cdn.scanapp.com/scanapp.min.js"></script>
 </head>
 <body>
-
-<header>
-    <img src="logo.png" alt="Logo" class="logo">
-    <nav>
-        <ul class="menu">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="quienes-somos.html">Quiénes Somos</a></li>
-            <li><a href="formulario.html">Formulario</a></li>
-            <li><a href="#adminModal">Administrador</a></li>
-        </ul>
-    </nav>
-</header>
-
-<main>
-    <h1>Base de Datos</h1>
-    <p>Aquí se mostrará la información de acceso de vehículos.</p>
-</main>
-
+    <header>
+        <h1>Generador y Lector de Códigos QR</h1>
+    </header>
+    
+    <section id="qr-generator">
+        <h2>Generar Código QR</h2>
+        <input type="text" id="qr-input" placeholder="Ingresa el texto o URL">
+        <button id="generate-qr">Generar QR</button>
+        <div id="qr-output"></div>
+    </section>
+    
+    <section id="qr-reader">
+        <h2>Escanear Código QR</h2>
+        <video id="camera-preview" playsinline></video>
+        <button id="start-scan">Iniciar Escaneo</button>
+        <p id="scan-result">Resultado: </p>
+    </section>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        document.getElementById('generate-qr').addEventListener('click', function() {
+            const input = document.getElementById('qr-input').value;
+            const output = document.getElementById('qr-output');
+            output.innerHTML = '';
+            new QRCode(output, input);
+        });
+        
+        document.getElementById('start-scan').addEventListener('click', function() {
+            ScanApp.scan({
+                success: function(result) {
+                    document.getElementById('scan-result').textContent = 'Resultado: ' + result;
+                },
+                error: function(err) {
+                    console.error('Error al escanear:', err);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
