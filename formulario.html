@@ -48,6 +48,18 @@
             </select>
         
             <button type="submit">Enviar</button>
+
+            <input type="text" id="torreCasa" placeholder="Torre o Casa" required>
+            <input type="text" id="numApto" placeholder="Número de Apartamento" required>
+            <input type="text" id="placa" placeholder="Placa" required>
+            <select id="carro">
+                <option value="Grande">Grande</option>
+                <option value="Pequeño">Pequeño</option>
+            </select>
+            <select id="parqueadero"></select>
+            <button type="submit">Generar QR</button>
+            <div id="qrCode"></div>
+
         </form>
         
         <!-- Espacio para el QR generado -->

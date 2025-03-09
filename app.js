@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const qrCodeDiv = document.getElementById("qrCode");
     const parqueaderoSelect = document.getElementById("parqueadero");
 
-    // Filtrar parqueaderos según el tipo de carro
+    // 🔹 Filtrar parqueaderos según el tipo de carro
     document.getElementById("carro").addEventListener("change", function () {
         let tipoCarro = this.value;
         parqueaderoSelect.innerHTML = ""; // Limpiar opciones
@@ -26,28 +26,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Generar QR con los datos del formulario
+    // 🔹 Generar QR al enviar el formulario
     form.addEventListener("submit", function (event) {
         event.preventDefault();
-        
-        let torreCasa = document.getElementById("torreCasa").value;
-        let numApto = document.getElementById("numApto").value;
-        let placa = document.getElementById("placa").value;
+
+        let torreCasa = document.getElementById("torreCasa").value.trim();
+        let numApto = document.getElementById("numApto").value.trim();
+        let placa = document.getElementById("placa").value.trim();
         let parqueadero = parqueaderoSelect.value;
+
+        if (!torreCasa || !numApto || !placa || !parqueadero) {
+            alert("⚠️ Todos los campos son obligatorios");
+            return;
+        }
 
         let qrData = `Torre/Casa: ${torreCasa}, Apto: ${numApto}, Placa: ${placa}, Parqueadero: ${parqueadero}`;
 
-        // Limpiar QR anterior
+        // 🔹 Limpiar QR anterior antes de generar uno nuevo
         qrCodeDiv.innerHTML = "";
 
-        // Generar nuevo QR
-        new QRCode(qrCodeDiv, {
+        // 🔹 Generar nuevo QR
+        let qr = new QRCode(qrCodeDiv, {
             text: qrData,
-            width: 128,
-            height: 128
+            width: 150,
+            height: 150
         });
+
+        console.log("✅ QR generado con datos:", qrData);
     });
 });
+
 
 // Botón de compartir
 document.getElementById("compartir").addEventListener("click", function () {
