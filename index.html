@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App QR</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+                <li><a href="formulario.html">Formulario</a></li>
+                <li><a href="#adminModal">Administrador</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <img src="imagen.webp" alt="Imagen Central" class="imagen-central">
+        <div class="botones">
+            <button onclick="window.location.href='lectorQR.html'">Escanear QR</button>
+            <button onclick="window.open('https://wa.me/TUNUMERO')">WhatsApp</button>
+            <button onclick="window.location.href='mailto:tuemail@gmail.com'">Email</button>
+        </div>
+    </main>
+
+    <!-- Modal de Administrador -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <h2>Área Restringida</h2>
+        <label for="adminPassword">Ingrese la contraseña:</label>
+        <input type="password" id="adminPassword">
+        <button id="adminLogin">Ingresar</button>
+        <a href="#" class="close-modal">Cerrar</a>
+    </div>
+</div>
+
+    <script src="app.js"></script>
+</body>
+</html>

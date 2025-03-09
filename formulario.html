@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" class="logo">
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="quienes-somos.html">Quiénes Somos</a></li>
+                <li><a href="lectorQR.html">Escanear QR</a></li>
+                <li><a href="#adminModal">Administrador</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Formulario de Registro</h2>
+        <form id="contactForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
+
+            <label for="torreCasa">Torre o Casa:</label>
+            <input type="text" id="torreCasa" required>
+
+            <label for="apartamento">Número de Apartamento:</label>
+            <input type="text" id="apartamento" required>
+
+            <label for="carro">Carro:</label>
+            <select id="carro" required>
+                <option value="" disabled selected>Seleccione una opción</option>
+                <option value="grande">Grande</option>
+                <option value="pequeño">Pequeño</option>
+            </select>
+
+            <label for="placa">Placa:</label>
+            <input type="text" id="placa" required>
+
+            <label for="parqueadero">Parqueadero:</label>
+            <select id="parqueadero" required>
+                <option value="" disabled selected>Seleccione una opción</option>
+            </select>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <canvas id="qrCanvas"></canvas>
+    </main>
+<!-- Modal de Administrador -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <h2>Área Restringida</h2>
+        <label for="adminPassword">Ingrese la contraseña:</label>
+        <input type="password" id="adminPassword">
+        <button id="adminLogin">Ingresar</button>
+        <a href="#" class="close-modal">Cerrar</a>
+    </div>
+</div>
+    <script src="app.js"></script>
+</body>
+</html>
