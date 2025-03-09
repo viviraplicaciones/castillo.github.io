@@ -1,17 +1,27 @@
+// Menú responsive
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".menu");
+
+    menuToggle.addEventListener("click", function () {
+        menu.classList.toggle("active");
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("qrForm");
-    const qrCanvas = document.getElementById("qrCanvas");
-    const qr = new QRCode(qrCanvas);
+    const qrCodeDiv = document.getElementById("qrCode");
+    const parqueaderoSelect = document.getElementById("parqueadero");
 
     // Filtrar parqueaderos según el tipo de carro
     document.getElementById("carro").addEventListener("change", function () {
-        let parqueadero = document.getElementById("parqueadero");
-        parqueadero.innerHTML = ""; // Limpiar opciones
+        let tipoCarro = this.value;
+        parqueaderoSelect.innerHTML = ""; // Limpiar opciones
 
-        if (this.value === "Grande") {
-            parqueadero.innerHTML = '<option value="C1">C1</option>';
-        } else if (this.value === "Pequeño") {
-            parqueadero.innerHTML = '<option value="A1">A1</option><option value="B1">B1</option>';
+        if (tipoCarro === "Grande") {
+            parqueaderoSelect.innerHTML = '<option value="C1">C1</option>';
+        } else if (tipoCarro === "Pequeño") {
+            parqueaderoSelect.innerHTML = '<option value="A1">A1</option><option value="B1">B1</option>';
         }
     });
 
@@ -22,9 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
         let torreCasa = document.getElementById("torreCasa").value;
         let numApto = document.getElementById("numApto").value;
         let placa = document.getElementById("placa").value;
-        let parqueadero = document.getElementById("parqueadero").value;
+        let parqueadero = parqueaderoSelect.value;
 
         let qrData = `Torre/Casa: ${torreCasa}, Apto: ${numApto}, Placa: ${placa}, Parqueadero: ${parqueadero}`;
-        qr.makeCode(qrData);
+
+        // Limpiar QR anterior
+        qrCodeDiv.innerHTML = "";
+
+        // Generar nuevo QR
+        new QRCode(qrCodeDiv, {
+            text: qrData,
+            width: 128,
+            height: 128
+        });
     });
 });
+
