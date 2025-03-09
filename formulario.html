@@ -22,35 +22,40 @@
 
     <main>
         <h2>Formulario de Registro</h2>
-        <form id="contactForm">
+        <form id="qrForm">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" required>
-
+        
             <label for="torreCasa">Torre o Casa:</label>
             <input type="text" id="torreCasa" required>
-
-            <label for="apartamento">Número de Apartamento:</label>
-            <input type="text" id="apartamento" required>
-
+        
+            <label for="numApto">Número de Apartamento:</label>
+            <input type="text" id="numApto" required>
+        
             <label for="carro">Carro:</label>
             <select id="carro" required>
-                <option value="" disabled selected>Seleccione una opción</option>
-                <option value="grande">Grande</option>
-                <option value="pequeño">Pequeño</option>
+                <option value="">Seleccione...</option>
+                <option value="Grande">Grande</option>
+                <option value="Pequeño">Pequeño</option>
             </select>
-
+        
             <label for="placa">Placa:</label>
             <input type="text" id="placa" required>
-
+        
             <label for="parqueadero">Parqueadero:</label>
             <select id="parqueadero" required>
-                <option value="" disabled selected>Seleccione una opción</option>
+                <option value="">Seleccione...</option>
+                <option value="A1">A1</option>
+                <option value="B1">B1</option>
+                <option value="C1">C1</option>
             </select>
-
+        
             <button type="submit">Enviar</button>
         </form>
 
-        <canvas id="qrCanvas"></canvas>
+        <!-- Espacio para el QR generado -->
+<canvas id="qrCanvas"></canvas>
+
     </main>
 <!-- Modal de Administrador -->
 <div id="adminModal" class="modal">
